@@ -24,4 +24,19 @@ const add = ({ scheme_name }) => {
   return db('schemes').insert({ scheme_name })
 }
 
-module.exports = { find, findById, findSteps, add }
+const update = ({ scheme_name }, id) => {
+  return db('schemes')
+    .where({ id })
+    .update({ scheme_name })
+}
+
+const remove = id => {
+  if (isNaN(id)) {
+    return null
+  } else {
+    return db('schemes')
+      .where({ id })
+      .delete()
+  }
+}
+module.exports = { find, findById, findSteps, add, update, remove }

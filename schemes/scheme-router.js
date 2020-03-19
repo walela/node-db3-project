@@ -96,24 +96,32 @@ router.put('/:id', (req, res) => {
     .then(scheme => {
       if (scheme) {
         Schemes.update(changes, id).then(updatedScheme => {
-          res.json(updatedScheme)
+          Schemes.findById(id).then(data => {
+            res.json(data[0])
+          })
         })
       } else {
         res.status(404).json({ message: 'Could not find scheme with given id' })
       }
     })
     .catch(err => {
+      console.error(err)
       res.status(500).json({ message: 'Failed to update scheme' })
     })
 })
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params
+  let schemeToDelete
+
+  Schemes.findById(id).then(data => {
+    schemeToDelete = data[0]
+  })
 
   Schemes.remove(id)
     .then(deleted => {
       if (deleted) {
-        res.json({ removed: deleted })
+        res.json({ removed: schemeToDelete })
       } else {
         res.status(404).json({ message: 'Could not find scheme with given id' })
       }
