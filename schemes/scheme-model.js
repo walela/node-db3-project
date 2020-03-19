@@ -20,4 +20,8 @@ const findSteps = id => {
     .orderBy('step_number', 'asc')
 }
 
-module.exports = { find, findById, findSteps }
+const add = ({ scheme_name }) => {
+  return db('schemes').insert({ scheme_name })
+}
+
+module.exports = { find, findById, findSteps, add }
